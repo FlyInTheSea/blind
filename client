@@ -1,0 +1,12 @@
+ Which user ID should the client be assigned to?:
+ > 10
+
+ What should we name the client?:
+ > tommorow
+
+ Where should we redirect the request after authorization? [http://localhost/auth/callback]:
+ > c.sc.cc/auth/callback
+
+New client created successfully.
+Client ID: 2
+Client secret: 3TWGk6dsuxxLy1HNXIuQwJi7SZl9uWjG8B1agyjk

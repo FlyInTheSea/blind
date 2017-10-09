@@ -1,0 +1,55 @@
+
+
+修改route 
+
+
+修改 config 
+修改config 常量 
+
+front: /www/React/src/api/api_urls.js
+back : /www/React/src/api/db.js
+
+ 复制 /www/React/src/api/database/template.js
+   修改成 /www/React/src/api/database/module.js
+
+修改web.php  添加路由	
+
+
+创建migrate
+php artisan make:migration house
+
+创建controller 
+php artisan make:controller house  --resource
+
+创建model
+php artisan make:model house
+
+
+修改table_structure
+
+修改column
+
+
+前端
+
+修改 src/table_map/table.js map
+
+复制 src/containers/your-scold/  创建 src/containers/community
+修改 id.js  id = your-scolds
+
+
+
+创建 src/api/database/your-scolds.js
+修改 src/api/api_urls.js  中 const db
+add 
+
+src/components/forms/switch/add/add.js
+
+
+index
+
+src/components/forms/switch/items/load_more_switch.js
+src/components/forms/switch/items/table_switch.js
+
+
+
