@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\api\api;
+use App\Http\Controllers\crud\crud;
 use Illuminate\Http\Request;
 
-class channel extends api
+class channel extends crud
 {
     //
 
@@ -23,21 +24,6 @@ class channel extends api
             $this->respond(
                 $data
             );
-    }
-
-    function store(Request $request)
-    {
-
-        $data = $request->except(["_method", "s", "deleted_at"]);
-
-        $save_result = \App\channel::firstOrCreate($data);
-
-        if ($save_result) {
-            return $this->respond($save_result);
-        } else {
-            return $this->respond_with_error();
-        }
-
     }
 
     function index(Request $request)

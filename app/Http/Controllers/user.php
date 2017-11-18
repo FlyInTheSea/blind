@@ -2,83 +2,87 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\api\api;
+use App\Http\Controllers\crud\crud;
 use Illuminate\Http\Request;
 
-class user extends Controller
+class user extends api
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    function index(Request $request)
     {
-        //
+        try {
+        $data = \App\User::where(
+                []
+            )
+                ->orderBy("created_at", "desc")
+                ->paginate();
+            if (!$data)
+                return $this->respond_not_found();
+            return $this->respond($data);
+        } catch (\Throwable $exception) {
+            return $this->respond_with_error($exception->getMessage());
+        }
+    }
+
+    function all()
+    {
+        $data = \App\User::all()->all();
+        $data = array_map(function ($item) {
+            return [
+                "id" => $item["id"],
+                "name" => $item["name"]
+            ];
+        }, $data);
+        return
+            $this->respond(
+                $data
+            );
+    }
+
+
+    function store(Request $request)
+    {
+
+        try {
+
+            $user = new \App\User();
+
+            $user->name = $request->name;
+
+            $user->email = $request->email;
+
+            $user->save();
+
+            $user->attachRole((int)$request->role_id);
+
+            return $this->respond($user);
+
+        } catch (\Throwable $exception) {
+
+            return $this->respond($exception->getMessage());
+
+        }
+
     }
 
     /**
-     * Show the form for creating a new resource.
+     * function index(Request $request)
+     * {
+     * try {
+     * $data = ($this->class)::where(
+     * []
+     * )
+     * ->orderBy("created_at", "desc")
+     * ->paginate();
+     * if (!$data)
+     * return $this->respond_not_found();
+     * return $this->respond($data);
+     * } catch (\Throwable $exception) {
+     * return $this->respond_with_error($exception->getMessage());
+     * }
      *
-     * @return \Illuminate\Http\Response
+     * }
+     * @param Request $request
+     * @return mixed
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

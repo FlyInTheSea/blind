@@ -10,4 +10,7 @@ class fund extends Model
     protected $guarded = [
         "id",
     ];
+
+
 }
+

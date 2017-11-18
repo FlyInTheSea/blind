@@ -22,8 +22,8 @@ class Fund extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->increments('id');
-            $table->decimal('amount')->comment("");
-            $table->integer('room_id')->comment("");
+            $table->decimal('amount',10,2)->comment("");
+            $table->integer('house_id')->comment("");
             $table->smallInteger('reason_id')->comment("");
             $table->string('comment')->comment("")->nullable();
             $table->timestamps();// create column created_at updated_at

@@ -20,7 +20,7 @@ class Customer extends Migration
         Schema::create($this->table, function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->bigInteger('phone');
+            $table->bigInteger('phone')->unique();
             $table->timestamps();
         });
 

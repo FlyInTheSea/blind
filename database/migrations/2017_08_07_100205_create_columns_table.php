@@ -42,6 +42,16 @@ class CreateColumnsTable extends Migration
         $this->insert_config_transformation();
         $this->insert_fund();
         $this->insert_upload_files();
+        $this->insert_customer();
+        $this->insert_customer_info();
+        $this->insert_level();
+        $this->insert_contracts();
+        $this->role();
+        $this->permission();
+        $this->permission_role();
+        $this->community_role();
+        $this->community_sellers();
+        $this->insert_commission();
     }
 
 
@@ -155,19 +165,15 @@ class CreateColumnsTable extends Migration
         $table_structure_columns = [
             [
                 "name" => "name",
-                "name_alias" => "渠道识别码"
+                "name_alias" => "渠道"
             ],
             [
-                "name" => "name_alias",
-                "name_alias" => "渠道",
+                "name" => "value",
+                "name_alias" => "值",
             ],
             [
-                "name" => "status",
-                "name_alias" => "状态",
-            ],
-            [
-                "name" => "parent_id",
-                "name_alias" => "上级渠道",
+                "name" => "community_id",
+                "name_alias" => "小区",
                 "type" => 2
             ],
 
@@ -362,8 +368,22 @@ class CreateColumnsTable extends Migration
                 "name_alias" => "用户名",
             ],
             [
+                "name" => "phone",
+                "name_alias" => "手机号",
+            ],
+            [
                 "name" => "email",
                 "name_alias" => "email",
+            ],
+
+            /**
+             *  不是同一张表
+             */
+
+            [
+                "name" => "role_id",
+                "name_alias" => "角色",
+                "type" => 2,
             ],
         ];
 
@@ -384,6 +404,14 @@ class CreateColumnsTable extends Migration
             [
                 "name" => "name",
                 "name_alias" => "小区名",
+            ],
+            [
+                "name" => "commission",
+                "name_alias" => "销售总佣金比率",
+            ],
+            [
+                "name" => "sales_commission",
+                "name_alias" => "销售人员佣金比率",
             ],
         ];
 
@@ -411,16 +439,16 @@ class CreateColumnsTable extends Migration
                 "name_alias" => "房间号",
             ],
             [
-                "name" => "unit",
+                "name" => "entrance",
                 "name_alias" => "单元",
+            ],
+            [
+                "name" => "unit",
+                "name_alias" => "楼号",
             ],
             [
                 "name" => "floor",
                 "name_alias" => "楼层",
-            ],
-            [
-                "name" => "status",
-                "name_alias" => "状态",
             ],
             [
                 "name" => "area",
@@ -456,14 +484,13 @@ class CreateColumnsTable extends Migration
                 "type" => 2,
             ],
             [
-                "name" => "name_alias",
-                "name_alias" => "值",
+                "name" => "name",
+                "name_alias" => "选项",
             ],
 
             [
-                "name" => "name",
-                "name_alias" => "数字",
-                "writable" => 1
+                "name" => "value",
+                "name_alias" => "值",
             ],
 
             [
@@ -486,9 +513,13 @@ class CreateColumnsTable extends Migration
                 "writable" => 1
             ],
             [
-                "name" => "room_id",
+                "name" => "date",
+                "name_alias" => "日期",
+                "type" => 4,
+            ],
+            [
+                "name" => "house_id",
                 "name_alias" => "房号",
-//                "type"=>2
             ],
             [
                 "name" => "reason_id",
@@ -500,13 +531,14 @@ class CreateColumnsTable extends Migration
             ],
             [
                 "name" => "amount",
-                "name_alias" => "总价",
+                "name_alias" => "金额",
             ],
         ];
 
         $this->save_column($table_structure_columns, 10);
 
     }
+
     function insert_upload_files()
     {
 
@@ -539,7 +571,334 @@ class CreateColumnsTable extends Migration
 
     }
 
+    function insert_customer()
+    {
+
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "name",
+                "name_alias" => "用户名",
+            ],
+            [
+                "name" => "phone",
+                "name_alias" => "电话",
+            ],
+        ];
+
+        $this->save_column($table_structure_columns, 12);
+
+    }
+
+    function insert_customer_info()
+    {
+
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "sex",
+                "name_alias" => "性别",
+                "type" => 2
+            ],
+            [
+                "name" => "family",
+                "name_alias" => "家庭成员",
+                "type" => 2
+            ],
+            [
+                "name" => "motive",
+                "name_alias" => "动机",
+                "type" => 2
+            ],
+            [
+                "name" => "community_id",
+                "name_alias" => "项目",
+                "type" => 2
+            ],
+            [
+                "name" => "channel_id",
+                "name_alias" => "渠道",
+                "type" => 2
+            ],
+            [
+                "name" => "district_id",
+                "name_alias" => "现居地",
+                "type" => 2
+            ],
+            [
+                "name" => "identification",
+                "name_alias" => "身份证",
+            ],
+            [
+                "name" => "address",
+                "name_alias" => "住址",
+            ],
+            [
+                "name" => "apartment_layout",
+                "name_alias" => "户型",
+                "type" => 2
+            ],
+        ];
+        $this->save_column($table_structure_columns, 13);
+
+    }
+
+    function insert_level()
+    {
+
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "customer_id",
+                "name_alias" => "用户id",
+            ],
+            [
+                "name" => "level",
+                "name_alias" => "评级",
+            ],
+            [
+                "name" => "note",
+                "name_alias" => "注释",
+            ],
+        ];
+        $this->save_column($table_structure_columns, 14);
+
+    }
+
+    function insert_contracts()
+    {
+
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "price",
+                "name_alias" => "单价",
+            ],
+            [
+                "name" => "area",
+                "name_alias" => "面积",
+            ],
+            [
+                "name" => "amount",
+                "name_alias" => "总价",
+            ],
+            [
+                "name" => "pay_method",
+                "name_alias" => "付款方式",
+                "type" => 2
+            ],
+            [
+                "name" => "customer_id",
+                "name_alias" => "用户",
+            ],
+            [
+                "name" => "house_id",
+                "name_alias" => "房间",
+            ],
+            [
+                "name" => "date",
+                "name_alias" => "日期",
+                "type" => 4,
+            ],
+        ];
+        $this->save_column($table_structure_columns, 15);
+
+    }
+
+    function role()
+    {
+
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "name",
+                "name_alias" => "名称",
+            ],
+            [
+                "name" => "display_name",
+                "name_alias" => "别名",
+            ],
+            [
+                "name" => "description",
+                "name_alias" => "简介",
+            ],
+
+        ];
+        $this->save_column($table_structure_columns, 16);
+
+    }
+
+    function permission()
+    {
+
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "name",
+                "name_alias" => "权限",
+            ],
+            [
+                "name" => "description",
+                "name_alias" => "简介",
+            ],
+            [
+                "name" => "display_name",
+                "name_alias" => "别名",
+            ],
+        ];
+        $this->save_column($table_structure_columns, 17);
+
+    }
+
+    function permission_role()
+    {
+
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "permission_id",
+                "name_alias" => "权限",
+
+            ],
+            [
+                "name" => "role_id",
+                "name_alias" => "角色",
+                "type" => 2,
+            ],
+        ];
+        $this->save_column($table_structure_columns, 18);
+
+    }
+
+    function community_role()
+    {
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "name",
+                "name_alias" => "职位",
+
+            ],
+            [
+                "name" => "community_id",
+                "name_alias" => "小区名",
+                "type" => 2,
+            ],
+            [
+                "name" => "user_id",
+                "name_alias" => "人员",
+                "type" => 2,
+            ],
+            [
+                "name" => "commission_rate",
+                "name_alias" => "提点",
+            ],
+        ];
+        $this->save_column($table_structure_columns, 19);
+
+    }
+
+    function community_sellers()
+    {
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "community_id",
+                "name_alias" => "项目",
+                "type" => 2,
+            ],
+            [
+                "name" => "user_id",
+                "name_alias" => "销售人员",
+                "type" => 2,
+            ],
+        ];
+        $this->save_column($table_structure_columns, 20);
+
+    }
+
+    function insert_commission()
+    {
+        $table_structure_columns = [
+            [
+                "name" => "id",
+                "name_alias" => "id",
+                "writable" => 1
+            ],
+            [
+                "name" => "house_id",
+                "name_alias" => "房间",
+            ],
+            [
+                "name" => "user_id",
+                "name_alias" => "销售人员",
+            ],
+            [
+                "name" => "community_id",
+                "name_alias" => "小区",
+            ],
+            [
+                "name" => "role",
+                "name_alias" => "角色",
+            ],
+            [
+                "name" => "commission",
+                "name_alias" => "佣金",
+            ],
+            [
+                "name" => "rate",
+                "name_alias" => "费率",
+            ],
+            [
+                "name" => "amount",
+                "name_alias" => "回款金额",
+            ],
+        ];
+        $this->save_column($table_structure_columns, 21);
+
+    }
+
+
     /**
+     *
+     *
+     * /**
      * Reverse the migrations.
      *
      * @return void

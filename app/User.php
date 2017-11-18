@@ -5,11 +5,13 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use HasApiTokens;
+    use EntrustUserTrait;
 
 
     /**
@@ -31,4 +33,11 @@ class User extends Authenticatable
     ];
 
 
+    function commission(){
+        return $this->hasMany(commission::class);
+    }
+
+    function commission_amount(){
+        return $this->commission()->sum("commission");
+    }
 }

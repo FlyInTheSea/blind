@@ -19,7 +19,7 @@ class template_fulfill
     {
         $content = file_get_contents($template_path);
 
-        $put_content = str_replace($content, $search, $replace);
+        $put_content = str_replace($search, $replace, $content);
 
         file_put_contents($target_path, $put_content);
 
@@ -38,9 +38,9 @@ class template_fulfill
 
         // 反向替换 /{ }/
         $search = str_replace([
-            "\\{", "\\}","\\<","\\>"
+            "\\{", "\\}", "\\<", "\\>"
         ], [
-            "{", "}","<",">"
+            "{", "}", "<", ">"
         ], $search);
         // 替换　" /
         $content = str_replace(["\"", "/"], ["\\\"", "\\/"], $content);

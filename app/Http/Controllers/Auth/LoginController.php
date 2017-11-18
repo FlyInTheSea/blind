@@ -7,13 +7,15 @@ use App\Http\Controllers\authenticates_user;
 use App\Http\Controllers\Controller;
 use App\User;
 use GuzzleHttp\Client;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Passport\Http\Controllers\HandlesOAuthErrors;
 use Mockery\Exception;
+
+use App\Http\Controllers\authenticate_by_email;
+
 
 class LoginController extends api
 {
@@ -28,8 +30,8 @@ class LoginController extends api
     |
     */
 
+    use authenticate_by_email;
     use HandlesOAuthErrors;
-    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -43,7 +45,7 @@ class LoginController extends api
      *
      * @return void
      */
-    public function __construct()
+    function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
@@ -66,9 +68,14 @@ class LoginController extends api
         }
     }
 
-    function login(authenticates_user $authenticates_user,Request $request)
+    function login(Request $request)
     {
-        $authenticates_user->invite($request);
+        try {
+            $this->invite($request);
+            return $this->respond([]);
+        } catch (\Throwable $exception) {
+            return $this->respond_with_error($exception->getMessage());
+        }
     }
 
 }

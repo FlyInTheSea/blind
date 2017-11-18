@@ -68,7 +68,7 @@ class create_crud_front extends Command
 
     function make_api_url_export()
     {
-        $path = Config::get("constants.path_template_id") . "/db.js";
+        $path = Config::get("constants.path_template_id") ;
 
         $template = '// import * as templates from "./database/templates"';
 
@@ -259,4 +259,8 @@ class create_crud_front extends Command
         $this->excute_command($command);
         return $this;
     }
+
+
+
+
 }

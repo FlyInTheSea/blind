@@ -14,8 +14,8 @@ return [
     "path_container" => env("PATH_FRONT") . "/containers",
     "path_template_id" => env("PATH_FRONT") . "/containers/template/id.js",
     "path_id" => env("PATH_FRONT") . "/containers/%s/id.js",
-    "path_template_api_database" => env("PATH_FRONT") . "api/database/template.js",
-    "path_format_api_database" => env("PATH_FRONT") . "api/database/%s.js",
+    "path_template_api_database" => env("PATH_FRONT") . "/api/database/template.js",
+    "path_format_api_database" => env("PATH_FRONT") . "/api/database/%s.js",
     "path_switch" => env("PATH_FRONT") ."/components/forms/switch",
 
     "path_table_map" => env("PATH_FRONT") . "/table_map/table.js",

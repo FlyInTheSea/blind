@@ -85,6 +85,60 @@ class CreateTableStructures extends Migration
         $table_structure_first_row->name_alias = "文件";
         $table_structure_first_row->save();
 
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "customers";
+        $table_structure_first_row->name_alias = "顾客";
+        $table_structure_first_row->save();
+
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "customer_info";
+        $table_structure_first_row->name_alias = "顾客详情";
+        $table_structure_first_row->save();
+
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "customer_levels";
+        $table_structure_first_row->name_alias = "顾客评级";
+        $table_structure_first_row->save();
+
+
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "contracts";
+        $table_structure_first_row->name_alias = "合同";
+        $table_structure_first_row->save();
+
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "roles";
+        $table_structure_first_row->name_alias = "角色";
+        $table_structure_first_row->save();
+
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "permissions";
+        $table_structure_first_row->name_alias = "权限";
+        $table_structure_first_row->save();
+
+        // real table is permission_roles;
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "permission_roles";
+        $table_structure_first_row->name_alias = "角色权限";
+        $table_structure_first_row->save();
+
+
+
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "community_roles";
+        $table_structure_first_row->name_alias = "项目管理人员";
+        $table_structure_first_row->save();
+
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "community_sellers";
+        $table_structure_first_row->name_alias = "项目销售";
+        $table_structure_first_row->save();
+
+
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "commission";
+        $table_structure_first_row->name_alias = "佣金";
+        $table_structure_first_row->save();
     }
 
     /**

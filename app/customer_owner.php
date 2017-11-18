@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class bbb extends Model
+class customer_owner extends Model
 {
     //
 }

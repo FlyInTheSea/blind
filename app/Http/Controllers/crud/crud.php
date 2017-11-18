@@ -19,9 +19,12 @@ class crud extends api
     //
     protected $class;
 
+    protected $short_class_name;
+
     function __construct()
     {
         $class = (new \ReflectionClass($this))->getShortName();
+        $this->short_class_name = (new \ReflectionClass($this))->getShortName();
         $class = sprintf("\App\%s", $class);
         $this->class = $class;
     }
@@ -40,8 +43,6 @@ class crud extends api
 
     function index(Request $request)
     {
-
-
         try {
             $data = ($this->class)::where(
                 []
@@ -61,7 +62,7 @@ class crud extends api
     function update(Request $request)
     {
         $form_data = $request->except(["_method", "s", "deleted_at"]);
-        $channel = \App\channel::find($request->id);
+        $channel = ($this->class)::find($request->{$this->short_class_name});
         $save_result = $channel->update($form_data);
         if ($save_result) {
             return $this->respond_update_success($channel);
@@ -73,10 +74,12 @@ class crud extends api
 
     function edit(Request $request)
     {
+
+
         return $this->respond(
-//            new \App\Http\Resources\table_strucutre(
-            \App\channel::find($request->channel)
-//            )
+            ($this->class)::find(
+                $request->{$this->short_class_name}
+            )
         );
 
     }
