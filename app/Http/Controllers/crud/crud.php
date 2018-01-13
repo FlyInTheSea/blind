@@ -74,8 +74,6 @@ class crud extends api
 
     function edit(Request $request)
     {
-
-
         return $this->respond(
             ($this->class)::find(
                 $request->{$this->short_class_name}

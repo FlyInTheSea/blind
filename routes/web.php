@@ -11,27 +11,21 @@
 |
 */
 
-
+const FONT_PATH = "/usr/share/fonts/truetype/arphic/uming.ttc";
 use \App\Traits\config_data;
 
 
-Route::get("/tt", function () {
-    $path = "excel/oAje8OIdCH649xe8bWGaJmkoVPgp5gPfXdYK81ZY.jpeg";
-    $path = "excel/clc.doc";
-    return response()->file(
-        \Illuminate\Support\Facades\Storage::disk("local")->url($path)
-    );
 
 
-    return response(
-        \Illuminate\Support\Facades\Storage::get($path)
-    )->withHeaders(
-        [
-            "Content-type" => "image/jpeg",
-            "Content-Length" => \Illuminate\Support\Facades\Storage::size($path)
-        ]
-    );
+
+Route::get("test",function (){
+
+    return view("test",["url"=>"fuck"]);
+
 });
+
+
+
 
 Route::get("/word", function () {
     $path = "excel/clc.doc";
@@ -41,45 +35,7 @@ Route::get("/word", function () {
         , "中文.doc");
 });
 
-
-Route::get('/aaa',
-    function () {
-        $path = "/home/wwwroot/c.sc.cc/excel_template/room_available.xls";
-        \Maatwebsite\Excel\Facades\Excel::load($path, function ($reader) {
-
-            $reader->skipRows(1)->each(
-                function ($item) {
-                    $id = $item->id;
-                    try {
-
-                        $arr = explode("-", $id);
-                        $data = [];
-                        $data["community_id"] = 1;
-                        $data["unit"] = $arr[0]; //楼号
-                        $data["entrance"] = $arr[1];//单元
-                        $data["number"] = $arr[2];//房号
-                        $data["area"] = $item->area;
-                        $data["price"] = $item->price;
-                        $data["total_price"] = $item->amount;
-                        $data["floor"] = substr($data["number"] . "", 0, -2);
-
-
-                        \App\house::firstOrCreate($data);
-
-                    } catch (Throwable $exception) {
-                        echo $exception->getMessage();
-                    }
-
-                }
-            );
-            die();
-            return $reader->get();
-
-        });
-    }
-);
-
-
+Route::get("/overview/community/{community}/sell_station_by_custom", "overview@sell_station_by_custom");
 Route::middleware(
     [
         "auth:api",
@@ -88,20 +44,17 @@ Route::middleware(
 )->prefix("api/v1")->group(
     function () {
 
-
         Route::post("/file/excel", "upload_file@excel");
 
+        Route::post("/room_status/load_from_excel", "upload_file@read_room_init_status_from_excel");
 
         Route::get("/overview/community/{community}", "overview@community");
 
+        Route::get("/overview/community/{community}/sell_station_by_custom", "overview@sell_station_by_custom");
 
         Route::get("/overview/community/{community}/one_year_sell_station_by_month", "overview@one_year_sell_station_by_month");
         Route::get("/overview/community/{community}/one_year_sell_station_by_day", "overview@one_year_sell_station_by_day");
-
-
         Route::get("/overview/community/{community}/sell_station_by_custom_time", "overview@sell_station_by_custom_time");
-
-
         Route::get("/overview/community/{community}/one_year_sell_station_by_day", "overview@one_year_sell_station_by_day");
 
 
@@ -150,8 +103,10 @@ Route::middleware(
         Route::resource("config_transformation", "config_transformation");
         Route::resource("fund", "fund");
         Route::resource("role", "role");
+        Route::resource("contract_template", "contract_template");
 
         Route::get("/search/community/word", "community@search");
+        Route::get("/print_img/fund/{fund}","print_img@fund");
 
         $path = \Illuminate\Support\Facades\Config::get("constants.path_route_data");
 
@@ -165,9 +120,6 @@ Route::middleware(
 
     }
 );
-
-
-//file_get_contents()
 
 Route::middleware(
     ["cors"]

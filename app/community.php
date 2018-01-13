@@ -22,6 +22,11 @@ class community extends Model
         ];
     }
 
+    function contract_template()
+    {
+        return $this->hasOne(contract_template::class);
+    }
+
     function community_role()
     {
         return $this->hasMany(community_role::class);
@@ -413,7 +418,9 @@ class community extends Model
         $field = "channel_id";
 
         $districts = $this->customer_info()
-            ->select(\Illuminate\Support\Facades\DB::raw("count(*) as value, {$field} as name, date_format(created_at,'%Y%m') as month ,(to_days(now()) - to_days(created_at)) as day_diff ,community_id"))
+            ->select(\Illuminate\Support\Facades\DB::raw(
+                "count(*) as value, {$field} as name, date_format(created_at,'%Y%m') as month ,(to_days(now()) - to_days(created_at)) as day_diff ,community_id")
+            )
             ->havingRaw(
                 "day_diff < 366"
             )

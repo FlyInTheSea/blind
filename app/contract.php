@@ -10,4 +10,6 @@ class contract extends Model
     protected $guarded = [
         "id"
     ];
+
+
 }

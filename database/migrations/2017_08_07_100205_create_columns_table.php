@@ -52,6 +52,7 @@ class CreateColumnsTable extends Migration
         $this->community_role();
         $this->community_sellers();
         $this->insert_commission();
+        $this->insert_customer_owner();
     }
 
 
@@ -462,6 +463,10 @@ class CreateColumnsTable extends Migration
                 "name" => "total_price",
                 "name_alias" => "总价",
             ],
+            [
+                "name" => "updated_at",
+                "name_alias" => "更新",
+            ],
         ];
 
         $this->save_column($table_structure_columns, 8);
@@ -691,12 +696,8 @@ class CreateColumnsTable extends Migration
                 "name_alias" => "单价",
             ],
             [
-                "name" => "area",
-                "name_alias" => "面积",
-            ],
-            [
-                "name" => "amount",
-                "name_alias" => "总价",
+                "name" => "down_payment",
+                "name_alias" => "首付",
             ],
             [
                 "name" => "pay_method",
@@ -891,6 +892,23 @@ class CreateColumnsTable extends Migration
             ],
         ];
         $this->save_column($table_structure_columns, 21);
+
+    }
+
+    function insert_customer_owner()
+    {
+        $table_structure_columns = [
+            [
+                "name" => "user_id",
+                "name_alias" => "员工",
+            ],
+            [
+                "name" => "customer_id",
+                "name_alias" => "顾客",
+            ],
+
+        ];
+        $this->save_column($table_structure_columns, 22);
 
     }
 

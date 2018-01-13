@@ -2,83 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\crud\crud;
 use Illuminate\Http\Request;
 
-class customer_owner extends Controller
+class customer_owner extends crud
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    function index(Request $request)
     {
-        //
+
+        $where = json_decode($request->query_params, true);
+        $where = array_map(function ($key, $val) {
+            return [
+                $key,
+                "=",
+                $val
+            ];
+        }, array_keys($where), $where);
+        try {
+            $data = \App\customer_owner::where(
+                []
+            )
+                ->orderBy("created_at", "desc")
+                ->where(
+                    $where
+                )
+                ->paginate();
+            if (!$data)
+                return $this->respond_not_found();
+            return $this->respond($data);
+        } catch (\Throwable $exception) {
+            return $this->respond_with_error($exception->getMessage());
+        }
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

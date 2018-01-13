@@ -139,6 +139,13 @@ class CreateTableStructures extends Migration
         $table_structure_first_row->name = "commission";
         $table_structure_first_row->name_alias = "佣金";
         $table_structure_first_row->save();
+
+
+
+        $table_structure_first_row = new  \App\table_structure();
+        $table_structure_first_row->name = "customer_owners";
+        $table_structure_first_row->name_alias = "顾客归属";
+        $table_structure_first_row->save();
     }
 
     /**

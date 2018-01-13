@@ -394,4 +394,22 @@ class overview extends api
         );
 
     }
+
+
+    function sell_station_by_custom(\App\community $community)
+    {
+        $begin = 20180101;
+        $end = 20180101;
+        $community->contract()->where(
+            [
+                [
+                    "date", ">", $begin
+                ],
+                [
+                    "date", "<", $end
+                ]
+            ]
+        );
+    }
+
 }

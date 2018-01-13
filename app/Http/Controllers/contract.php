@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class contract extends crud
 {
     use change_timestamp_to_int;
+
     function store(Request $request)
     {
         try {
@@ -39,6 +40,9 @@ class contract extends crud
 
             $fund->save();
 
+
+            $data["amount"] = $data["price"] * $house->area;
+
             $save_result = \App\contract::firstOrCreate($data);
 
             $house->change_to_contract_status();
@@ -47,7 +51,6 @@ class contract extends crud
             return $this->respond_with_error($exception->getMessage());
         }
     }
-
 
 
 }

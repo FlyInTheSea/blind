@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 class community extends crud
 {
 
+
+
     function all()
     {
         $data = \App\community::all()->all();
@@ -18,9 +20,9 @@ class community extends crud
         );
     }
 
-    function search()
+    function search(Request $request)
     {
-        return $this->respond(\App\community::search("张家口")->get());
+        return $this->respond(\App\community::search($request->query)->get());
     }
 
 }
