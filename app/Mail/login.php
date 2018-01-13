@@ -22,7 +22,8 @@ class login extends Mailable
     {
         $token = $data["access_token"];
 
-        $this->url = "http://localhost:3000/auth/" . $token;
+        $this->url = env("LOGIN_URL")
+            . $token;
     }
 
     /**
