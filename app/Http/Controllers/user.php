@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\api\api;
-use App\Http\Controllers\crud\crud;
 use Illuminate\Http\Request;
 
 class user extends api
@@ -11,13 +10,14 @@ class user extends api
     function index(Request $request)
     {
         try {
-        $data = \App\User::where(
+            $data = \App\User::where(
                 []
             )
                 ->orderBy("created_at", "desc")
                 ->paginate();
-            if (!$data)
+            if ( ! $data) {
                 return $this->respond_not_found();
+            }
             return $this->respond($data);
         } catch (\Throwable $exception) {
             return $this->respond_with_error($exception->getMessage());
@@ -50,6 +50,8 @@ class user extends api
             $user->name = $request->name;
 
             $user->email = $request->email;
+
+            $user->phone = $request->phone;
 
             $user->save();
 
