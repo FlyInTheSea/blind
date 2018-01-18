@@ -21,7 +21,7 @@ class community extends Model
         ];
     }
 
-    public function contract_template()
+    function contract_template()
     {
         return $this->hasOne(contract_template::class);
     }
