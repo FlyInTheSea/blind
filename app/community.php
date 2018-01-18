@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
@@ -22,7 +21,7 @@ class community extends Model
         ];
     }
 
-    function contract_template()
+    public function contract_template()
     {
         return $this->hasOne(contract_template::class);
     }
@@ -63,21 +62,15 @@ class community extends Model
         return $this->hasMany(house::class)->where("status", "=", 0)->count();
     }
 
-    private function one_community_fund()
-    {
-        return $this->hasManyThrough(fund::class, house::class);
-    }
-
     function one_community_withdraw_money()
     {
         return $this->one_community_fund()
             ->where("reason_id", "=", 2)->sum("amount");
     }
 
-    function contract_amount()
+    private function one_community_fund()
     {
-        return $this->one_community_fund()
-            ->sum("amount");
+        return $this->hasManyThrough(fund::class, house::class);
     }
 
     function one_community_subscribe_amount()
@@ -90,6 +83,12 @@ class community extends Model
         return $this->contract_amount() * $this->commission;
     }
 
+    function contract_amount()
+    {
+        return $this->one_community_fund()
+            ->sum("amount");
+    }
+
     function one_community_bank_balance()
     {
         return "todo";
@@ -100,13 +99,6 @@ class community extends Model
         return "todo";
         $this->one_community_fund()->where("reason_id", "=", 0);
     }
-
-
-    function customer_info()
-    {
-        return $this->hasMany(customer_info::class);
-    }
-
 
     function sex()
     {
@@ -124,6 +116,11 @@ class community extends Model
 
         return $districts;
 
+    }
+
+    function customer_info()
+    {
+        return $this->hasMany(customer_info::class);
     }
 
     function district()
@@ -163,12 +160,6 @@ class community extends Model
         return $this->map("motive");
     }
 
-    function apartment_layout()
-    {
-        return $this->map("apartment_layout");
-    }
-
-
     function map($field)
     {
         $districts = $this->customer_info()
@@ -183,6 +174,11 @@ class community extends Model
             }
         );
         return $districts;
+    }
+
+    function apartment_layout()
+    {
+        return $this->map("apartment_layout");
     }
 
     function channel_id()
@@ -202,6 +198,31 @@ class community extends Model
         return $districts;
     }
 
+    function get_last_year_month_first_day_number()
+    {
+        return (new \Carbon\Carbon("last year"))->format("Ym") * 100 + 1;
+    }
+
+    function sell_house_area_one_year_by_month()
+    {
+        return $this->sell_house_one_year_by_month_index("sum(contracts.area)");
+    }
+
+    function sell_house_one_year_by_month_index($field)
+    {
+        // amount area withdraw number
+        return $this->contract()->where(
+            [
+                [
+                    "date",
+                    ">",
+                    $this->get_last_year_today_number()
+                ]
+            ]
+        )->select(
+            DB::raw("{$field} as value  , date div 100 as month")
+        )->groupBy(["month"])->get();
+    }
 
     function contract()
     {
@@ -211,31 +232,6 @@ class community extends Model
     function get_last_year_today_number()
     {
         return (new \Carbon\Carbon())->subDays(366)->format("Ymd");
-    }
-
-    function get_last_year_month_first_day_number()
-    {
-        return (new \Carbon\Carbon("last year"))->format("Ym") * 100 + 1;
-    }
-
-
-    function sell_house_one_year_by_month_index($field)
-    {
-        // amount area withdraw number
-        return $this->contract()->where(
-            [
-                [
-                    "date", ">", $this->get_last_year_today_number()
-                ]
-            ]
-        )->select(
-            DB::raw("{$field} as value  , date div 100 as month")
-        )->groupBy(["month"])->get();
-    }
-
-    function sell_house_area_one_year_by_month()
-    {
-        return $this->sell_house_one_year_by_month_index("sum(contracts.area)");
     }
 
     function sell_house_amount_one_year_by_month()
@@ -253,10 +249,14 @@ class community extends Model
         return $this->one_community_fund()->where(
             [
                 [
-                    "date", ">", $this->get_last_year_today_number()
+                    "date",
+                    ">",
+                    $this->get_last_year_today_number()
                 ],
                 [
-                    "reason_id", "=", 2
+                    "reason_id",
+                    "=",
+                    2
                 ]
             ]
         )->select(
@@ -264,9 +264,12 @@ class community extends Model
         )->groupBy(["month"])->get();
     }
 
-
     // by day
 
+    function sell_house_area_one_year_by_day()
+    {
+        return $this->sell_house_one_year_by_day_index("sum(contracts.area)");
+    }
 
     function sell_house_one_year_by_day_index($field)
     {
@@ -274,18 +277,14 @@ class community extends Model
         return $this->contract()->where(
             [
                 [
-                    "date", ">", $this->get_last_year_today_number()
+                    "date",
+                    ">",
+                    $this->get_last_year_today_number()
                 ]
             ]
         )->select(
             DB::raw("{$field} as value  , date as day")
         )->groupBy(["day"])->get();
-    }
-
-
-    function sell_house_area_one_year_by_day()
-    {
-        return $this->sell_house_one_year_by_day_index("sum(contracts.area)");
     }
 
     function sell_house_amount_one_year_by_day()
@@ -304,10 +303,14 @@ class community extends Model
             ->where(
                 [
                     [
-                        "date", ">", $this->get_last_year_today_number()
+                        "date",
+                        ">",
+                        $this->get_last_year_today_number()
                     ],
                     [
-                        "reason_id", "=", 2
+                        "reason_id",
+                        "=",
+                        2
                     ]
                 ]
             )->select(
@@ -315,6 +318,27 @@ class community extends Model
             )->groupBy(["day"])->get();
     }
 
+    function district_twelve()
+    {
+        $districts = $this->customer_info()
+            ->select(\Illuminate\Support\Facades\DB::raw("count(*) as value,district_id as name, date_format(created_at,'%Y%m') as month ,(to_days(now()) - to_days(created_at)) as day_diff "))
+            ->havingRaw(
+                "day_diff < 366"
+            )
+            ->whereNotNull("district_id")
+            ->groupBy("district_id", "month")->get();
+
+        $districts = $districts->reduce(
+            function ($carry, $item) {
+                $key = $item->district_name($item->name);
+                $carry[$key][(int)$item["month"]] = $item["value"];
+                return $carry;
+            },
+            []
+        );
+
+        return $this->data_merge_with_empty_month_date_for_assoc($districts);
+    }
 
     function data_merge_with_empty_month_date_for_assoc($data)
     {
@@ -347,27 +371,9 @@ class community extends Model
 
     }
 
-    function district_twelve()
+    function motive_twelve()
     {
-        $districts = $this->customer_info()
-            ->select(\Illuminate\Support\Facades\DB::raw("count(*) as value,district_id as name, date_format(created_at,'%Y%m') as month ,(to_days(now()) - to_days(created_at)) as day_diff "))
-            ->havingRaw(
-                "day_diff < 366"
-            )
-            ->whereNotNull("district_id")
-            ->groupBy("district_id", "month")->get();
-
-
-        $districts = $districts->reduce(
-            function ($carry, $item) {
-                $key = $item->district_name($item->name);
-                $carry[$key][(int)$item["month"]] = $item["value"];
-                return $carry;
-            },
-            []
-        );
-
-        return $this->data_merge_with_empty_month_date_for_assoc($districts);
+        return $this->twelve_statis("motive");
     }
 
     function twelve_statis($field)
@@ -380,7 +386,6 @@ class community extends Model
             ->whereNotNull($field)
             ->groupBy($field, "month")->get();
 
-
         $districts = $districts->reduce(
             function ($carry, $item) use ($field) {
                 $key = $item->district_map($item->name, $field);
@@ -391,11 +396,6 @@ class community extends Model
         );
 
         return $this->data_merge_with_empty_month_date_for_assoc($districts);
-    }
-
-    function motive_twelve()
-    {
-        return $this->twelve_statis("motive");
     }
 
     function sex_twelve()
@@ -426,7 +426,6 @@ class community extends Model
             )
             ->whereNotNull($field)
             ->groupBy($field, "month")->get();
-
 
         $districts = $districts->reduce(
             function ($carry, $item) use ($field) {
