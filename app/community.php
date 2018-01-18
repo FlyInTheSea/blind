@@ -26,7 +26,7 @@ class community extends Model
         return $this->hasOne(contract_template::class);
     }
 
-    public function community_role()
+    function community_role()
     {
         return $this->hasMany(community_role::class);
     }
