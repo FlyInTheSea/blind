@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\crud\crud;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class upload_file extends crud
 {
-
     function excel(Request $request)
     {
         try {
@@ -46,7 +46,13 @@ class upload_file extends crud
                         $data["price"] = $item->price;
                         $data["total_price"] = $item->amount;
                         $data["floor"] = substr($data["number"] . "", 0, -2);
-                        \App\house::firstOrCreate($data);
+                        $data["sign"] = \App\house::generate_sign($data);
+                        try {
+                            \App\house::firstOrCreate($data);
+                        } catch (\Throwable $exception) {
+                            //不做处理　
+                            Log::info($exception->getMessage());
+                        }
                     }
                 );
             });
@@ -60,8 +66,5 @@ class upload_file extends crud
             );
         }
 
-
     }
-
-
 }

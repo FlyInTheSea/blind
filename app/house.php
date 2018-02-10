@@ -11,6 +11,18 @@ class house extends Model
         "id",
     ];
 
+    static function generate_sign($data)
+    {
+
+        return "" .
+            $data["community_id"] . "-" .
+            $data["unit"] . "-" .
+            $data["entrance"] . "-" .
+            $data["floor"] . "-" .
+            $data["number"] . "-" .
+            "";
+    }
+
     function trans()
     {
         $this->joiningTable("");
@@ -29,7 +41,6 @@ class house extends Model
 
         return $this;
     }
-
 
     function change_to_contract_status()
     {
@@ -59,12 +70,10 @@ class house extends Model
         return $this->hasMany(fund::class);
     }
 
-
     function contract()
     {
         return $this->hasOne(contract::class);
     }
-
 
     function contract_fund()
     {
@@ -77,7 +86,4 @@ class house extends Model
     {
         return $this->contract_fund()->sum("amount");
     }
-
-
-
 }

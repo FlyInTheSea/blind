@@ -3,9 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Zizaco\Entrust\EntrustPermission;
 
-class permission extends EntrustPermission
+class permission extends Model
 {
     //
     protected $guarded = [

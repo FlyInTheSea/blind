@@ -8,10 +8,12 @@ use Intervention\Image\Facades\Image;
 class print_img extends Controller
 {
 
+
     public $font_size = 20;
     function fund()
     {
 
+        defined("a") && define(FONT_PATH,env("constants.font_path"));
 
         $img = \Intervention\Image\Facades\Image::make(
             \Illuminate\Support\Facades\Storage::disk("public")->url("receipt.jpg")

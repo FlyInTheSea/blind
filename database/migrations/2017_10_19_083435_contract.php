@@ -22,7 +22,7 @@ class Contract extends Migration
             $table->decimal("price");
             $table->decimal('area', 12, 2);
             $table->decimal('amount', 12, 2);
-            $table->decimal('down_payment', 12, 2);
+            $table->decimal('downpayment', 12, 2);
             $table->integer('pay_method');
             $table->string('customer_id');
             $table->string('house_id');

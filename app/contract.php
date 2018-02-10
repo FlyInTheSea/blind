@@ -11,5 +11,4 @@ class contract extends Model
         "id"
     ];
 
-
 }

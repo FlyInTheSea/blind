@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\crud\crud;
-use Illuminate\Http\Request;
+use Faker\Generator;
 
 class role extends crud
 {
@@ -23,5 +23,16 @@ class role extends crud
             );
     }
 
+    function create(Generator $faker)
+    {
 
+        \App\role::create(
+            [
+                "name" => $faker->city,
+                "display_name" => "am",
+                "description" => "我是描述"
+            ]
+        );
+        return "Fuck";
+    }
 }

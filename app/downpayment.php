@@ -4,10 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class role extends Model
+class downpayment extends Model
 {
-    protected $guarded = [
-        "id",
-    ];
     //
+
+    protected $guarded = ["id"];
 }

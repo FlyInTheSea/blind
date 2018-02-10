@@ -55,7 +55,6 @@ class CreateColumnsTable extends Migration
         $this->insert_customer_owner();
     }
 
-
     function insert_daily_report()
     {
 
@@ -133,11 +132,9 @@ class CreateColumnsTable extends Migration
                 "name_alias" => "消费",
             ],
 
-
         ];
 
         $this->save_column($table_structure_columns, 5);
-
 
     }
 
@@ -161,7 +158,6 @@ class CreateColumnsTable extends Migration
 
     function insert_channel()
     {
-
 
         $table_structure_columns = [
             [
@@ -197,10 +193,8 @@ class CreateColumnsTable extends Migration
 
     }
 
-
     function insert_city()
     {
-
 
         $table_structure_columns = [
             [
@@ -237,10 +231,8 @@ class CreateColumnsTable extends Migration
 
     }
 
-
     function insert_table_structures()
     {
-
 
         $table_structure_columns = [
             [
@@ -266,7 +258,6 @@ class CreateColumnsTable extends Migration
                 "name_alias" => "删除状态",
                 "writable" => 1
             ]
-
 
         ];
 
@@ -331,7 +322,6 @@ class CreateColumnsTable extends Migration
                 "name_alias" => "字段类型",
             ]
 
-
         ];
 
         array_map(function ($item) {
@@ -349,7 +339,6 @@ class CreateColumnsTable extends Migration
 
         }, $columns);
     }
-
 
     /**
      *
@@ -423,7 +412,6 @@ class CreateColumnsTable extends Migration
     function insert_house()
     {
 
-
         $table_structure_columns = [
             [
                 "name" => "id",
@@ -472,7 +460,6 @@ class CreateColumnsTable extends Migration
         $this->save_column($table_structure_columns, 8);
 
     }
-
 
     function insert_config_transformation()
     {
@@ -696,13 +683,14 @@ class CreateColumnsTable extends Migration
                 "name_alias" => "单价",
             ],
             [
-                "name" => "down_payment",
-                "name_alias" => "首付",
-            ],
-            [
                 "name" => "pay_method",
                 "name_alias" => "付款方式",
                 "type" => 2
+            ],
+
+            [
+                "name" => "downpayment",
+                "name_alias" => "首付",
             ],
             [
                 "name" => "customer_id",
@@ -911,7 +899,6 @@ class CreateColumnsTable extends Migration
         $this->save_column($table_structure_columns, 22);
 
     }
-
 
     /**
      *

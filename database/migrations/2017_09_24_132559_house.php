@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class House extends Migration
 {
@@ -26,6 +26,7 @@ class House extends Migration
             $table->decimal('area')->comment("面积");
             $table->decimal('price', 12, 2)->comment("单价");
             $table->decimal('total_price', 12, 2)->comment("总价");
+            $table->string("sign")->unique()->comment("用来判断小区是否存在");
             $table->timestamps();
         });
     }

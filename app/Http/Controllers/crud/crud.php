@@ -32,13 +32,13 @@ class crud extends api
     function store(Request $request)
     {
         $data = $request->except(["_method", "s", "deleted_at"]);
-
         try {
             $save_result = ($this->class)::firstOrCreate($data);
             return $this->respond($save_result);
         } catch (\Exception $exception) {
             return $this->respond_with_error($exception->getMessage());
         }
+
     }
 
     function index(Request $request)

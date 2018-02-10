@@ -68,11 +68,6 @@ class community extends Model
             ->where("reason_id", "=", 2)->sum("amount");
     }
 
-    private function one_community_fund()
-    {
-        return $this->hasManyThrough(fund::class, house::class);
-    }
-
     function one_community_subscribe_amount()
     {
         return $this->hasManyThrough(fund::class, house::class)->where("reason_id", "=", 1)->sum("amount");
@@ -264,12 +259,12 @@ class community extends Model
         )->groupBy(["month"])->get();
     }
 
-    // by day
-
     function sell_house_area_one_year_by_day()
     {
         return $this->sell_house_one_year_by_day_index("sum(contracts.area)");
     }
+
+    // by day
 
     function sell_house_one_year_by_day_index($field)
     {
@@ -437,6 +432,11 @@ class community extends Model
         );
 
         return $this->data_merge_with_empty_month_date_for_assoc($districts);
+    }
+
+    private function one_community_fund()
+    {
+        return $this->hasManyThrough(fund::class, house::class);
     }
 }
 

@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\api\api;
+use App\house as house_model;
 use App\Http\Controllers\crud\crud;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Mockery\Exception;
 
 class house extends crud
 {
@@ -20,10 +18,14 @@ class house extends crud
     {
         if ($method === "equal") {
             return [
-                $key, "=", $val
+                $key,
+                "=",
+                $val
             ];
-        } else if ($method === "") {
+        } else {
+            if ($method === "") {
 
+            }
         }
     }
 
@@ -36,7 +38,6 @@ class house extends crud
             "unit" => "equal",
             "floor" => "equal",
         ];
-
 
         $where = [];
 
@@ -56,7 +57,6 @@ class house extends crud
     function index(Request $request)
     {
 
-
         try {
             $where = json_decode(
                 ($request->query_params), true
@@ -67,7 +67,6 @@ class house extends crud
         } catch (\Throwable $exception) {
             $where = [];
         }
-
 
         try {
             $data = \App\house::where(
@@ -81,8 +80,9 @@ class house extends crud
                     return $house;
                 }
             );
-            if (!$data)
+            if (!$data) {
                 return $this->respond_not_found();
+            }
             return $this->respond($data);
         } catch (\Throwable $exception) {
             return $this->respond_with_error($exception->getMessage());
@@ -97,4 +97,14 @@ class house extends crud
                 ->paginate());
     }
 
+    function summaries(house_model $house)
+    {
+        $contract_already_payment = $house->contract_already_payment();
+        return $this->respond(
+            [
+                "contract_already_payment" => $contract_already_payment,
+                "amount" => $house->contract->amount
+            ]
+        );
+    }
 }

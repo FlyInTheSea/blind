@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\downpayment;
+use App\house;
 use App\Http\Controllers\crud\crud;
 use App\Traits\change_timestamp_to_int;
 use Illuminate\Http\Request;
@@ -10,10 +12,21 @@ class contract extends crud
 {
     use change_timestamp_to_int;
 
+    function downpayment_info($house_id, $downpayment)
+    {
+        downpayment::firstOrCreate(
+            [
+                "house_id" => $house_id,
+                "downpayment" => $downpayment
+            ]
+        );
+
+    }
+
     function store(Request $request)
     {
-        try {
 
+        try {
 
             $data = $request->except(["_method", "s", "deleted_at"]);
 
@@ -23,6 +36,10 @@ class contract extends crud
                 return $this->respond_with_error("房屋 状态不对");
             }
 
+            if ($request->input("downpayment")) {
+                $this->downpayment_info($request->house_id, $request->input("downpayment"));
+                unset($data["downpayment"]);
+            }
 
             $data["customer_id"] = $house->house_owner->id;
             $data["date"] = $this->change_js_timestamp_to_Ymd_format($data["date"]);
@@ -30,7 +47,9 @@ class contract extends crud
             $fund = \App\fund::where(
                 [
                     [
-                        "house_id", "=", (int)$request->house_id,
+                        "house_id",
+                        "=",
+                        (int)$request->house_id,
                     ],
                     ["reason_id", "=", 1],
                 ]
@@ -39,7 +58,6 @@ class contract extends crud
             $fund->reason_id = 2;
 
             $fund->save();
-
 
             $data["amount"] = $data["price"] * $house->area;
 
@@ -52,5 +70,12 @@ class contract extends crud
         }
     }
 
-
+    function summaries(house $house)
+    {
+        $contract = $house->contract;
+        return $this->respond([
+            "amount" => $contract->amount,
+            "already_payed" =>  $house->contract_already_payment()
+        ]);
+    }
 }

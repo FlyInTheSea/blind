@@ -6,8 +6,10 @@
  * Time: 22:58
  */
 
-
 //here is front path
+
+//const FRONT_BUILD_AND_UPLOAD = "front_build_and_upload";
+
 return [
     "path_front" => env("PATH_FRONT"),
     "path_api" => env("PATH_FRONT") . "/api",
@@ -16,13 +18,16 @@ return [
     "path_id" => env("PATH_FRONT") . "/containers/%s/id.js",
     "path_template_api_database" => env("PATH_FRONT") . "/api/database/template.js",
     "path_format_api_database" => env("PATH_FRONT") . "/api/database/%s.js",
-    "path_switch" => env("PATH_FRONT") ."/components/forms/switch",
+    "path_switch" => env("PATH_FRONT") . "/components/forms/switch",
 
     "path_table_map" => env("PATH_FRONT") . "/table_map/table.js",
 
     // path back end
     "path_log" => app_path("log.log"),
-    "path_route_data" => base_path("routes/route.data")
+    "path_route_data" => base_path("routes/route.data"),
+    "font_path" => "/usr/share/fonts/truetype/arphic/uming.ttc",
 
-
+    "commands" => [
+        "front_build_and_upload" => "front_build_and_upload",
+    ],
 ];

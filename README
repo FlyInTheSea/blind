@@ -2,3 +2,8 @@
 oauth_access_tokens
 oauth_clients
 users
+
+
+
+php artisan migrate
+php artisan passport:client --personal

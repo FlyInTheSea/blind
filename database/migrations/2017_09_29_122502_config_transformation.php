@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class ConfigTransformation extends Migration
 {
@@ -25,7 +25,7 @@ class ConfigTransformation extends Migration
         Schema::create($this->table, function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment("选项");
-            $table->integer('value')->comment("值");
+            $table->integer('value')->comment("值")->nullable();
             $table->smallInteger("column_id")->default(0)->comment("状态 0表示正常");
             $table->smallInteger('table_structure_id');
             $table->unique(["table_structure_id", "column_id", "value"]);
@@ -165,5 +165,10 @@ class ConfigTransformation extends Migration
     {
         //
         Schema::dropIfExists($this->table);
+    }
+
+    function get()
+    {
+
     }
 }
